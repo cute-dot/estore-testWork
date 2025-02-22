@@ -1,5 +1,6 @@
 package ru.isands.test.estore.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class ElectronicsType {
     private String name;
 
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Electronic> electronics = new LinkedHashSet<>();
 
 

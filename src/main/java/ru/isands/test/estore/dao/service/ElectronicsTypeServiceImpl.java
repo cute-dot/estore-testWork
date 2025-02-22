@@ -1,6 +1,8 @@
 package ru.isands.test.estore.dao.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.isands.test.estore.dao.entity.ElectronicsType;
 import ru.isands.test.estore.dao.repo.ElectronicsTypeRepository;
@@ -12,6 +14,12 @@ import java.util.Optional;
 @Service
 public class ElectronicsTypeServiceImpl implements ElectronicsTypeService {
     private final ElectronicsTypeRepository electronicsTypeRepository;
+
+    @Override
+    public Page<ElectronicsType> findAllByPages(Pageable pageable) {
+        return electronicsTypeRepository.findAll(pageable);
+    }
+
     @Override
     public List<ElectronicsType> findAllElectronicsTypes() {
         return electronicsTypeRepository.findAll();
@@ -23,13 +31,13 @@ public class ElectronicsTypeServiceImpl implements ElectronicsTypeService {
     }
 
     @Override
-    public ElectronicsType saveElectronicsType(ElectronicsType electronicsType) {
-        return electronicsTypeRepository.save(electronicsType);
+    public void saveElectronicsType(ElectronicsType electronicsType) {
+        electronicsTypeRepository.save(electronicsType);
     }
 
     @Override
-    public ElectronicsType updateElectronicsType(Long id, ElectronicsType electronicsType) {
+    public void updateElectronicsType(Long id, ElectronicsType electronicsType) {
         electronicsType.setId(id);
-        return electronicsTypeRepository.save(electronicsType);
+        electronicsTypeRepository.save(electronicsType);
     }
 }

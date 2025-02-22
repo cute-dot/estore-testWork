@@ -1,5 +1,6 @@
 package ru.isands.test.estore.dao.service;
 
+import ru.isands.test.estore.dao.dto.ElectronicsTypeEmployeeDto;
 import ru.isands.test.estore.dao.entity.ElectronicsStore;
 import ru.isands.test.estore.dao.entity.ElectronicsTypeEmployee;
 import ru.isands.test.estore.dao.entity.ElectronicsTypeEmployeeId;
@@ -11,7 +12,7 @@ public interface ElectronicsTypeEmployeeService {
     List<ElectronicsTypeEmployee> findAllElectronicsTypeEmployee();
     Optional<ElectronicsTypeEmployee> findElectronicsTypeEmployeeById(ElectronicsTypeEmployeeId id);
 
-    ElectronicsTypeEmployee saveElectronicsTypeEmployee(ElectronicsTypeEmployee electronicsTypeEmployee);
+    void saveElectronicsTypeEmployee(ElectronicsTypeEmployeeDto electronicsTypeEmployeeDto);
 
-    ElectronicsTypeEmployee updateElectronicsTypeEmployee(ElectronicsTypeEmployeeId id, ElectronicsTypeEmployee electronicsTypeEmployee);
+    void updateElectronicsTypeEmployee(ElectronicsTypeEmployeeDto electronicsTypeEmployeeDto);
 }

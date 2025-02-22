@@ -1,6 +1,8 @@
 package ru.isands.test.estore.dao.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.isands.test.estore.dao.entity.Position;
 import ru.isands.test.estore.dao.repo.PositionRepository;
@@ -12,6 +14,12 @@ import java.util.Optional;
 @Service
 public class PositionServiceImpl implements PositionService {
     private final PositionRepository positionRepository;
+
+    @Override
+    public Page<Position> findAllByPages(Pageable pageable) {
+        return positionRepository.findAll(pageable);
+    }
+
     @Override
     public List<Position> findAllPositions() {
         return positionRepository.findAll();

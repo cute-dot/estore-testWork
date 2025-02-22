@@ -1,6 +1,7 @@
 package ru.isands.test.estore.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,15 +38,15 @@ public class Store {
     private String address;
 
     @OneToMany(mappedBy = "store")
-    @JsonManagedReference
+    @JsonIgnore
     private Set<ElectronicsStore> electronicsStores = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "store")
-    @JsonManagedReference("employee-store")
+    @JsonIgnore
     private Set<Employee> employees = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "store")
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Purchase> purchases = new LinkedHashSet<>();
 
 }

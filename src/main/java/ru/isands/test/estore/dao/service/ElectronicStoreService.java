@@ -1,6 +1,7 @@
 package ru.isands.test.estore.dao.service;
 
 
+import ru.isands.test.estore.dao.dto.ElectronicsStoreDtoPost;
 import ru.isands.test.estore.dao.entity.ElectronicsStore;
 import ru.isands.test.estore.dao.entity.ElectronicsStoreId;
 
@@ -12,8 +13,8 @@ public interface ElectronicStoreService {
     List<ElectronicsStore> findAllElectronicStores();
     Optional<ElectronicsStore> findElectronicStoreById(ElectronicsStoreId electronicsStoreId);
 
-    ElectronicsStore saveElectronicStore(ElectronicsStore electronicStore);
+    void saveElectronicStore(ElectronicsStoreDtoPost electronicStore);
 
-    ElectronicsStore updateElectronicStore(ElectronicsStoreId electronicsStoreId, ElectronicsStore electronicStore);
+    void updateElectronicStore(ElectronicsStoreId electronicsStoreId, ElectronicsStore electronicStore);
 
 }

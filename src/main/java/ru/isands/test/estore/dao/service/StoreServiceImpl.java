@@ -1,6 +1,8 @@
 package ru.isands.test.estore.dao.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.isands.test.estore.dao.entity.Store;
 import ru.isands.test.estore.dao.repo.StoreRepository;
@@ -12,6 +14,12 @@ import java.util.Optional;
 @Service
 public class StoreServiceImpl implements StoreService {
     private final StoreRepository storeRepository;
+
+    @Override
+    public Page<Store> findAllByPages(Pageable pageable) {
+        return storeRepository.findAll(pageable);
+    }
+
     @Override
     public List<Store> findAllStores() {
         return storeRepository.findAll();
