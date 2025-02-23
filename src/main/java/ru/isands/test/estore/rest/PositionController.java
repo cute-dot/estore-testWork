@@ -96,7 +96,7 @@ public class PositionController {
         return position.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Добавить новую позицию
+
     @Operation(
             summary = "Добавить новую позицию",
             description = "Добавляет новую позицию в базу данных",
@@ -116,4 +116,35 @@ public class PositionController {
     public void addPosition(@Valid @RequestBody Position position) {
         positionService.savePosition(position);
     }
+
+    @Operation(
+            summary = "Обновить существующую позицию",
+            description = "Обновляет данные существующей позиции в базе данных",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Позиция успешно обновлена"),
+                    @ApiResponse(responseCode = "400", description = "Некорректные данные",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Некорректные данные для обновления позиции\" }"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Позиция не найдена",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Позиция с указанным ID не найдена\" }"
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePosition(
+            @PathVariable Long id,
+            @Valid @RequestBody Position position
+    ) {
+        positionService.updatePosition(id, position);
+    }
+
 }

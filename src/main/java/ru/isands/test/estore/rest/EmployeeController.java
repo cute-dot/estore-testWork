@@ -121,4 +121,38 @@ public class EmployeeController {
 		employeeService.saveEmployee(employee, employeeDtoPost.getPositionId(), employeeDtoPost.getStoreId());
 	}
 
+	@Operation(
+			summary = "Обновить данные сотрудника",
+			description = "Обновляет данные сотрудника в базе данных по его ID",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Сотрудник успешно обновлён"),
+					@ApiResponse(responseCode = "400", description = "Некорректные данные",
+							content = @Content(mediaType = "application/json",
+									schema = @Schema(
+											example = "{ \"error\": \"Некорректные данные для обновления сотрудника\" }"
+									)
+							)
+					),
+					@ApiResponse(responseCode = "404", description = "Сотрудник не найден",
+							content = @Content(mediaType = "application/json",
+									schema = @Schema(
+											example = "{ \"error\": \"Сотрудник не найден\" }"
+									)
+							)
+					)
+			}
+	)
+	@PutMapping("/{employeeId}")
+	@ResponseStatus(HttpStatus.OK)
+	public void updateEmployee(
+			@PathVariable Long employeeId,
+			@Valid @RequestBody EmployeeDtoPost employeeDtoPost
+	) {
+		Employee employee = employeeMapper.toEntity(employeeDtoPost);
+
+		employeeService.updateEmployee(employeeId, employee,
+				employeeDtoPost.getPositionId(),
+				employeeDtoPost.getStoreId());
+	}
+
 }

@@ -143,4 +143,40 @@ public class PurchaseController {
         purchaseService.savePurchase(purchase, purchaseDto.getElectronicsId(), purchaseDto.getEmployeeId(),
                 purchaseDto.getStoreId(), purchaseDto.getPurchaseTypeId());
     }
+
+    @Operation(
+            summary = "Обновить существующую покупку",
+            description = "Обновляет данные существующей покупки в базе данных",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Покупка успешно обновлена"),
+                    @ApiResponse(responseCode = "400", description = "Некорректные данные",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Некорректные данные для обновления покупки\" }"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Покупка не найдена",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Покупка с указанным ID не найдена\" }"
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/{purchaseId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePurchase(
+            @PathVariable Long purchaseId,
+            @Valid @RequestBody PurchaseDto purchaseDto) {
+
+        Purchase purchase = purchaseMapper.toEntity(purchaseDto);
+        purchaseService.updatePurchase(purchaseId, purchase,
+                purchaseDto.getElectronicsId(),
+                purchaseDto.getEmployeeId(),
+                purchaseDto.getStoreId(),
+                purchaseDto.getPurchaseTypeId());
+    }
+
 }

@@ -19,6 +19,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 import ru.isands.test.estore.dao.entity.ElectronicsType;
 import ru.isands.test.estore.dao.service.ElectronicsTypeServiceImpl;
 
@@ -120,5 +121,35 @@ public class ElectronicsTypeController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addElectronicsType(@Valid @RequestBody ElectronicsType electronicsType) {
         electronicsTypeService.saveElectronicsType(electronicsType);
+    }
+
+    @Operation(
+            summary = "Обновить тип электроники",
+            description = "Обновляет существующий тип электроники в базе данных по его ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Тип электроники успешно обновлён"),
+                    @ApiResponse(responseCode = "400", description = "Некорректные данные",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Некорректные данные для обновления типа электроники\" }"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Тип электроники не найден",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Тип электроники с указанным ID не найден\" }"
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/{id}")
+    public void updateElectronicsType(
+            @PathVariable Long id,
+            @Valid @RequestBody ElectronicsType updatedElectronicsType) {
+
+        electronicsTypeService.updateElectronicsType(id ,updatedElectronicsType);
+
     }
 }

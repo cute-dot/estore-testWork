@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface ElectronicStoreService {
 
+    boolean isElectronicsAvailable(Long electronicsId, Long storeId);
     List<ElectronicsStore> findAllElectronicStores();
     Optional<ElectronicsStore> findElectronicStoreById(ElectronicsStoreId electronicsStoreId);
 

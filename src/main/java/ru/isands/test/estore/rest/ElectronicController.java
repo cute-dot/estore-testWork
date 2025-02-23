@@ -71,18 +71,7 @@ public class ElectronicController {
         Pageable pageable = PageRequest.of(offset, limit);
         return electronicService.findAllByPages(pageable);
     }
-    @GetMapping("/{id}/available")
-    public ResponseEntity<Boolean> checkProductAvailability(
-            @PathVariable Long productId) {
 
-        boolean isAvailable = productService.isProductAvailable(productId);
-
-        if (isAvailable) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
-        }
-    }
     @Operation(
             summary = "Получить электронику по ID",
             description = "Возвращает электронику по её уникальному идентификатору",
@@ -129,5 +118,39 @@ public class ElectronicController {
         Electronic electronic = electronicMapper.toEntity(electronicDto);
         electronicService.saveElectronic(electronic, electronicDto.getTypeId());
     }
+
+    @Operation(
+            summary = "Обновить данные электроники",
+            description = "Обновляет существующую электронику в базе данных по её идентификатору",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Электроника успешно обновлена"),
+                    @ApiResponse(responseCode = "400", description = "Некорректные данные",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Некорректные данные для обновления товара\" }"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Электроника не найдена",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Электроника не найдена\" }"
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateElectronic(@PathVariable Long id,
+                                 @Valid @RequestBody ElectronicDto electronicDto) {
+
+        Electronic electronic = electronicMapper.toEntity(electronicDto);
+
+        electronic.setId(id);
+
+        electronicService.updateElectronic(id, electronic, electronicDto.getTypeId());
+    }
+
 }
 

@@ -20,6 +20,15 @@ public class ElectronicStoreServiceImpl implements ElectronicStoreService {
     private final ElectronicsStoreMappper electr;
     private final StoreServiceImpl storeService;
     private final ElectronicServiceImpl electronicService;
+
+    @Override
+    public boolean isElectronicsAvailable(Long electronicsId, Long storeId) {
+        electronicsStoreRepository.findByElectronicsIdAndStoreId(electronicsId,storeId);
+        return electronicsStoreRepository.findByElectronicsIdAndStoreId(electronicsId, storeId)
+                .map(electronicsStore -> electronicsStore.getQuantity() >= 1)
+                .orElse(false);
+    }
+
     @Override
     public List<ElectronicsStore> findAllElectronicStores() {
         return electronicsStoreRepository.findAll();

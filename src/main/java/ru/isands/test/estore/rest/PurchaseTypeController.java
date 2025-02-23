@@ -100,7 +100,7 @@ public class PurchaseTypeController {
         return purchaseType.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Добавить новый тип покупки
+
     @Operation(
             summary = "Добавить новый тип покупки",
             description = "Добавляет новый тип покупки в базу данных",
@@ -120,5 +120,34 @@ public class PurchaseTypeController {
     public void addPurchaseType(@Valid @RequestBody PurchaseType purchaseType) {
         purchaseTypeService.savePurchaseType(purchaseType);
     }
+
+    @Operation(
+            summary = "Обновить существующий тип покупки",
+            description = "Обновляет существующий тип покупки в базе данных по его идентификатору",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Тип покупки успешно обновлен"),
+                    @ApiResponse(responseCode = "400", description = "Некорректные данные",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Некорректные данные для обновления типа покупки\" }"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Тип покупки не найден",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Тип покупки с указанным ID не найден\" }"
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePurchaseType(@PathVariable Long id,
+                                           @Valid @RequestBody PurchaseType purchaseType) {
+        purchaseTypeService.updatePurchaseType(id, purchaseType);
+    }
+
 }
 

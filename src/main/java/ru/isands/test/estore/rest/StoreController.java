@@ -99,7 +99,7 @@ public class StoreController {
         return store.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Добавить новый магазин
+
     @Operation(
             summary = "Добавить новый магазин",
             description = "Добавляет новый магазин в базу данных",
@@ -119,4 +119,32 @@ public class StoreController {
     public void addStore(@Valid @RequestBody Store store) {
         storeService.saveStore(store);
     }
+    @Operation(
+            summary = "Обновить данные магазина",
+            description = "Обновляет данные существующего магазина по ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Магазин успешно обновлен"),
+                    @ApiResponse(responseCode = "400", description = "Некорректные данные",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Некорректные данные для обновления магазина\" }"
+                                    )
+                            )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Магазин не найден",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            example = "{ \"error\": \"Магазин не найден\" }"
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateStore(@PathVariable Long id,
+                            @Valid @RequestBody Store store) {
+        storeService.updateStore(id, store);
+    }
+
 }

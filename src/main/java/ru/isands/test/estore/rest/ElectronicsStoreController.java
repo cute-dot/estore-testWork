@@ -28,8 +28,21 @@ public class ElectronicsStoreController {
 
     private final ElectronicStoreServiceImpl electronicsStoreService;
 
+    @Operation(
+            summary = "Проверка наличия товара (электроники) в магазине",
+            description = "Возвращает true, если в магазине достаточно требуемого количества электроники, иначе false"
+    )
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkElectronicsAvailability(
+            @RequestParam Long electronicsId,
+            @RequestParam Long storeId
 
-    // Получить все записи о наличии электроники в магазинах
+    ) {
+        boolean isAvailable = electronicsStoreService
+                .isElectronicsAvailable(electronicsId, storeId);
+        return ResponseEntity.ok(isAvailable);
+    }
+
     @GetMapping
     @Operation(
             summary = "Найти все записи о наличии электроники в магазинах",
@@ -42,7 +55,7 @@ public class ElectronicsStoreController {
         return electronicsStoreService.findAllElectronicStores();
     }
 
-    // Получить запись о наличии электроники в магазине по ID
+
     @Operation(
             summary = "Получить запись о наличии электроники в магазине по ID",
             description = "Возвращает запись о наличии электроники в магазине по её уникальному идентификатору",
@@ -71,7 +84,7 @@ public class ElectronicsStoreController {
         Optional<ElectronicsStore> electronicsStore = electronicsStoreService.findElectronicStoreById(electronicsStoreId);
         return electronicsStore.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-    // Добавить запись о наличии электроники в магазине
+
     @Operation(
             summary = "Добавить запись о наличии электроники в магазине",
             description = "Добавляет запись о наличии электроники в магазине в базу данных",
