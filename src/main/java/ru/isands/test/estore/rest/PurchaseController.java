@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.isands.test.estore.dao.dto.EmployeeTotalRevenueDTO;
+import ru.isands.test.estore.dao.dto.EmployeeTotalSalesDTO;
 import ru.isands.test.estore.dao.dto.PurchaseDto;
 import ru.isands.test.estore.dao.dto.PurchaseDtoGet;
 import ru.isands.test.estore.dao.entity.Purchase;
@@ -23,7 +26,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -179,4 +181,25 @@ public class PurchaseController {
                 purchaseDto.getPurchaseTypeId());
     }
 
+    @Operation(summary = "Получить топ сотрудников по количеству продаж",
+            description = "Возвращает список сотрудников, отсортированных по количеству проданных товаров за последний год.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешный запрос. Возвращает список сотрудников."),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    @GetMapping("/sales-count")
+    public ResponseEntity<List<EmployeeTotalSalesDTO>> getTopEmployeesBySalesCount() {
+        return ResponseEntity.ok(purchaseService.getTopEmployeesBySalesCount());
+    }
+
+    @Operation(summary = "Получить топ сотрудников по сумме продаж",
+            description = "Возвращает список сотрудников, отсортированных по общей сумме проданных товаров за последний год.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешный запрос. Возвращает список сотрудников."),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    @GetMapping("/sales-amount")
+    public ResponseEntity<List<EmployeeTotalRevenueDTO>> getTopEmployeesBySalesAmount() {
+        return ResponseEntity.ok(purchaseService.getTopEmployeesBySalesAmount());
+    }
 }
