@@ -7,7 +7,7 @@
 -	Frameworks: Spring Boot Starter (2.7), Spring Web, Spring JPA, Spring Hibernate;
 -	Базаданных: PostgreSQL;
 -	Библиотека для генерации документации: springdoc-openapi
-
+- Vue.js
 ### 1️ Установить зависимости
 Перед запуском убедитесь, что у вас установлены:
 - **JDK 11**
